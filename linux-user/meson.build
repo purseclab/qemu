@@ -5,6 +5,7 @@ linux_user_ss.add(files(
   'linuxload.c',
   'main.c',
   'mmap.c',
+  'sgx_ioctl.c',
   'safe-syscall.S',
   'signal.c',
   'strace.c',

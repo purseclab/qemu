@@ -1,4 +1,74 @@
+
 STRUCT_SPECIAL(termios)
+/*
+STRUCT(loop_info,
+       TYPE_INT,                 // lo_number 
+       TYPE_OLDDEVT,             // lo_device 
+       TYPE_ULONG,               // lo_inode 
+       TYPE_OLDDEVT,             // lo_rdevice 
+       TYPE_INT,                 // lo_offset 
+       TYPE_INT,                 // lo_encrypt_type 
+       TYPE_INT,                 // lo_encrypt_key_size 
+       TYPE_INT,                 // lo_flags 
+       MK_ARRAY(TYPE_CHAR, 64),  // lo_name 
+       MK_ARRAY(TYPE_CHAR, 32),  // lo_encrypt_key 
+       MK_ARRAY(TYPE_ULONG, 2),  // lo_init 
+       MK_ARRAY(TYPE_CHAR, 4))   // reserved 
+
+struct loop_info {
+	int		   lo_number;		// ioctl r/o 
+	__kernel_old_dev_t lo_device; 		// ioctl r/o 
+	unsigned long	   lo_inode; 		// ioctl r/o 
+	__kernel_old_dev_t lo_rdevice; 		// ioctl r/o 
+       int		   lo_offset;
+	int		   lo_encrypt_type;
+	int		   lo_encrypt_key_size; 	// ioctl w/o 
+	int		   lo_flags;			// ioctl r/o 
+	char		   lo_name[LO_NAME_SIZE];
+	unsigned char	   lo_encrypt_key[LO_KEY_SIZE]; // ioctl w/o 
+	unsigned long	   lo_init[2];
+	char		   reserved[4];
+};
+
+
+STRUCT(loop_info64,
+       TYPE_ULONGLONG,           
+       TYPE_ULONGLONG,           
+       TYPE_ULONGLONG,         
+       TYPE_ULONGLONG,           
+       TYPE_ULONGLONG,          
+       TYPE_INT,                
+       TYPE_INT,           
+       TYPE_INT,              
+       TYPE_INT,           
+       MK_ARRAY(TYPE_CHAR, 64),  
+       MK_ARRAY(TYPE_CHAR, 64),  
+       MK_ARRAY(TYPE_CHAR, 32),  
+       MK_ARRAY(TYPE_ULONGLONG, 2))  
+
+struct loop_info64 {
+	__u64		   lo_device;			
+	__u64		   lo_inode;			
+	__u64		   lo_rdevice;			
+	__u64		   lo_offset;
+	__u64		   lo_sizelimit;
+	__u32		   lo_number;			
+	__u32		   lo_encrypt_type;
+	__u32		   lo_encrypt_key_size;		
+	__u32		   lo_flags;			
+	__u8		   lo_file_name[LO_NAME_SIZE];
+	__u8		   lo_crypt_name[LO_NAME_SIZE];
+	__u8		   lo_encrypt_key[LO_KEY_SIZE]; 
+	__u64		   lo_init[2];
+};
+
+struct sgx_enclave_create  {
+	__u64	src;
+} __attribute__((__packed__));
+*/
+STRUCT(sgx_enclave_create,
+       TYPE_ULONGLONG
+)
 
 STRUCT(winsize,
        TYPE_SHORT, TYPE_SHORT, TYPE_SHORT, TYPE_SHORT)

@@ -122,6 +122,16 @@
 #include "linux_loop.h"
 #include "uname.h"
 
+#include "sgx_user.h"
+#include "sgx.h"
+#include <asm/mman.h>
+//#include <linux/delay.h>
+#include <x86_64-linux-gnu/sys/file.h>
+//#include <linux/highmem.h>
+//#include <linux/ratelimit.h>
+#define DEBUG_SGX 1
+
+
 #include "qemu.h"
 #include "qemu/guest-random.h"
 #include "qemu/selfmap.h"
@@ -5703,6 +5713,268 @@ static abi_long do_ioctl_drm_i915(const IOCTLEntry *ie, uint8_t *buf_temp,
 
 #endif
 
+typedef unsigned int u32;
+typedef unsigned long u64;
+#define PAGE_SIZE 4096 //need to add -p 4096, when running /qemu-x86_64 ./app
+#define PAGE_SHIFT 12
+u32 sgx_xsave_size_tbl[64];
+
+
+
+static u32 sgx_calc_ssaframesize(u32 miscselect, u64 xfrm)
+{
+	u32 size_max = PAGE_SIZE;
+	u32 size;
+	int i;
+
+	for (i = 2; i < 64; i++) {
+		if (!((1 << i) & xfrm))
+			continue;
+
+		size = SGX_SSA_GPRS_SIZE + sgx_xsave_size_tbl[i];
+		if (miscselect & SGX_MISC_EXINFO)
+			size += SGX_SSA_MISC_EXINFO_SIZE;
+
+		if (size > size_max)
+			size_max = size;
+	}
+
+	return (size_max + PAGE_SIZE - 1) >> PAGE_SHIFT;
+}
+
+
+static struct sgx_encl *sgx_encl_alloc(struct sgx_secs *secs)
+{
+	unsigned long ssaframesize = 0;
+	struct sgx_encl *encl;
+	//struct file *backing;
+	//struct file *pcmd;
+
+	//ssaframesize = sgx_calc_ssaframesize(secs->miscselect, secs->xfrm);
+    ssaframesize=sgx_calc_ssaframesize(secs->miscselect, secs->xfrm);
+    if(DEBUG_SGX)
+        printf("ssaframesize is %ld\n",ssaframesize);
+	//ignore the validation and shhere:
+    /*
+    if (sgx_validate_secs(secs, ssaframesize))
+		return (struct sgx_encl *)(-EINVAL);
+    
+	backing = shmem_file_setup("[dev/sgx]", secs->size + PAGE_SIZE,
+				   VM_NORESERVE);
+	if (IS_ERR(backing))
+		return (void *)backing;
+
+	pcmd = shmem_file_setup("[dev/sgx]", (secs->size + PAGE_SIZE) >> 5,
+				VM_NORESERVE);
+	if (IS_ERR(pcmd)) {
+		fput(backing);
+		return (void *)pcmd;
+	}
+    */
+	//encl = kzalloc(sizeof(*encl), GFP_KERNEL);
+	encl = calloc(1,sizeof(*encl));
+    if (!encl) {
+		//fput(backing);
+		//fput(pcmd);
+		return (struct sgx_encl *)(-ENOMEM);
+	}
+    
+	encl->attributes = secs->attributes;
+	encl->xfrm = secs->xfrm;
+    /*
+	kref_init(&encl->refcount);
+	INIT_LIST_HEAD(&encl->add_page_reqs);
+	INIT_LIST_HEAD(&encl->va_pages);
+	INIT_RADIX_TREE(&encl->page_tree, GFP_KERNEL);
+	INIT_LIST_HEAD(&encl->load_list);
+	INIT_LIST_HEAD(&encl->encl_list);
+	mutex_init(&encl->lock);
+	INIT_WORK(&encl->add_page_work, sgx_add_page_worker);
+    */
+	//encl->mm = current->mm;
+	encl->base = secs->base;
+	encl->size = secs->size;
+	encl->ssaframesize = secs->ssaframesize;
+	//encl->backing = backing;
+	//encl->pcmd = pcmd;
+
+	return encl;
+    
+}
+
+
+static int sgx_encl_create(struct sgx_secs *secs)
+{
+	struct sgx_pageinfo pginfo;
+	struct sgx_secinfo secinfo;
+	struct sgx_encl *encl;
+	//struct sgx_epc_page *secs_epc;
+	//struct vm_area_struct *vma;
+	//void *secs_vaddr;
+	//long ret;
+
+	encl = sgx_encl_alloc(secs);
+    if(DEBUG_SGX)
+        printf("encl is %p \n", encl);
+	//if (IS_ERR(encl))
+        //return PTR_ERR(encl);
+    
+	/*
+    // the page allocation for sgx is skipped since we do not have list of pages in this emulation
+    secs_epc = sgx_alloc_page(0);
+	if (IS_ERR(secs_epc)) {
+		ret = PTR_ERR(secs_epc);
+		goto out;
+	}
+    
+	encl->secs.epc_page = secs_epc;
+    */
+
+    /*
+    //tgid part is skipped, same reason above
+	ret = sgx_add_to_tgid_ctx(encl);
+	if (ret)
+		goto out;
+    */
+
+    /*
+	ret = sgx_init_page(encl, &encl->secs, encl->base + encl->size, 0,
+			    NULL, false);
+	if (ret)
+		goto out;
+    */
+    //the sgx_init_page could be simplified as followed: 
+    //FIXME: may need to also record "va_offset"
+    encl->secs.addr = encl->base + encl->size;
+	
+    //secs_vaddr = sgx_get_page(secs_epc);
+
+	pginfo.srcpge = (unsigned long)secs;
+	pginfo.linaddr = 0;
+	pginfo.secinfo = (unsigned long)&secinfo;
+	pginfo.secs = 0;
+	memset(&secinfo, 0, sizeof(secinfo));
+    /*
+    //based on: https://software.intel.com/content/www/us/en/develop/blogs/overview-of-an-intel-software-guard-extensions-enclave-life-cycle.html
+    // and https://insujang.github.io/2017-04-05/intel-sgx-instructions-in-enclave-initialization/
+    // If we skip the page, then we skip this
+	ret = __ecreate((void *)&pginfo, secs_vaddr);
+    */
+
+    /*
+	sgx_put_page(secs_vaddr);
+
+	if (ret) {
+		sgx_dbg(encl, "ECREATE returned %ld\n", ret);
+		ret = -EFAULT;
+		goto out;
+	}
+
+	if (secs->attributes & SGX_ATTR_DEBUG)
+		encl->flags |= SGX_ENCL_DEBUG;
+
+	encl->mmu_notifier.ops = &sgx_mmu_notifier_ops;
+	ret = mmu_notifier_register(&encl->mmu_notifier, encl->mm);
+	if (ret) {
+		if (ret == -EINTR)
+			ret = -ERESTARTSYS;
+		encl->mmu_notifier.ops = NULL;
+		goto out;
+	}
+
+	down_read(&current->mm->mmap_sem);
+	ret = sgx_encl_find(current->mm, secs->base, &vma);
+	if (ret != -ENOENT) {
+		if (!ret)
+			ret = -EINVAL;
+		up_read(&current->mm->mmap_sem);
+		goto out;
+	}
+
+	if (vma->vm_start != secs->base ||
+	    vma->vm_end != (secs->base + secs->size)
+	    // vma->vm_pgoff != 0 ) {
+		ret = -EINVAL;
+		up_read(&current->mm->mmap_sem);
+		goto out;
+	}
+
+	vma->vm_private_data = encl;
+	up_read(&current->mm->mmap_sem);
+
+	mutex_lock(&sgx_tgid_ctx_mutex);
+	list_add_tail(&encl->encl_list, &encl->tgid_ctx->encl_list);
+	mutex_unlock(&sgx_tgid_ctx_mutex);
+
+	return 0;
+out:
+	if (encl)
+		kref_put(&encl->refcount, sgx_encl_release);
+	return ret;
+    */
+   return 0;
+}
+
+
+
+static long sgx_ioc_enclave_create(unsigned int cmd,
+				   unsigned long arg)
+{
+    //the original code is as followed:
+    //struct sgx_enclave_create *createp = (struct sgx_enclave_create *)arg;
+	//void __user *src = (void __user *)createp->src;
+    //note that the src is copied from user space, hence we need to copy from the user at start.
+	struct sgx_enclave_create *createp = calloc(1,sizeof(struct sgx_enclave_create));
+    copy_from_user(createp, (abi_ulong) arg, (size_t) sizeof(struct sgx_enclave_create));
+    if(DEBUG_SGX){
+        printf("cmd is %d(%08x), arg is %ld(%08lx), createp->src is  %p, createp is %p \n",cmd,cmd,arg,arg,(void *)&(createp->src),(void *)&(createp) );
+
+    }
+	void  *src = (void *) createp->src;
+    if(DEBUG_SGX){
+        printf("2nd time cmd is %d(%08x), arg is %ld(%08lx), src is  %p, createp is %p \n",cmd,cmd,arg,arg, src, (void *)(createp) );
+
+    }
+	struct sgx_secs *secs;
+	int ret = 0;
+
+	secs = calloc(1,sizeof(*secs));
+	if (!secs)
+		return -ENOMEM;
+    if(DEBUG_SGX)
+        printf("\n 11111 sizeof secs is %ld, sec in sgx_ioc_enclave_create is %p, the size of secs is %ld\n", sizeof(*secs), (void *)secs, secs->size);
+
+	//abi_long copy_from_user(void *hptr, abi_ulong gaddr, size_t len)
+	
+    ret = copy_from_user((void *)secs, (abi_ulong) src, (size_t) sizeof(*secs));
+    if (ret) {
+        printf("\n error in copy from user secs is %p, src is %p, (size_t) sizeof(*secs) is %ld\n", (void *)secs,(void *)src,(size_t) sizeof(*secs) );
+		free(secs);
+		return ret;
+	}
+    if(DEBUG_SGX){
+        printf("\n 22222 sizeof secs is %ld, sec in sgx_ioc_enclave_create is %p, the size of secs is %ld\n", sizeof(*secs), (void *)secs, secs->size);
+    }
+    
+	ret = sgx_encl_create(secs);
+
+    free(secs);
+	return ret;
+}
+
+
+static abi_long do_ioctl_sgx_ioc_enclave_create(const IOCTLEntry *ie, uint8_t *buf_temp,
+                                     int fd, int cmd, abi_long arg)
+{
+    //abi_long ret;
+    qemu_log_mask(LOG_UNIMP,
+                      "In side do_ioctl_sgx_ioc_enclave_create\n");
+    if(DEBUG_SGX){
+        printf("\n in do_ioctl_sgx_ioc_enclave_create arg is %ld, cmd is %d \n", arg, cmd);
+    }
+    return (abi_long) sgx_ioc_enclave_create(cmd, arg);
+}
+
 IOCTLEntry ioctl_entries[] = {
 #define IOCTL(cmd, access, ...) \
     { TARGET_ ## cmd, cmd, #cmd, access, 0, {  __VA_ARGS__ } },
@@ -5713,6 +5985,9 @@ IOCTLEntry ioctl_entries[] = {
 #include "ioctls.h"
     { 0, 0, },
 };
+
+
+
 
 /* ??? Implement proper locking for ioctls.  */
 /* do_ioctl() Must return target values and target errnos. */
@@ -5805,6 +6080,7 @@ static abi_long do_ioctl(int fd, int cmd, abi_long arg)
     }
     return ret;
 }
+
 
 static const bitmask_transtbl iflag_tbl[] = {
         { TARGET_IGNBRK, TARGET_IGNBRK, IGNBRK, IGNBRK },

@@ -969,6 +969,10 @@ struct target_rtc_pll_info {
 #define TARGET_BLKROTATIONAL TARGET_IO(0x12, 126)
 #define TARGET_BLKZEROOUT TARGET_IO(0x12, 127)
 
+/* For sgx */
+#define TARGET_SGX_IOC_ENCLAVE_CREATE \
+	TARGET_IOW(SGX_MAGIC, 0x00, struct sgx_enclave_create)
+    
 /* From <linux/fd.h> */
 
 #define TARGET_FDMSGON        TARGET_IO(2, 0x45)

@@ -1,5 +1,6 @@
      /* emulated ioctl list */
 
+     IOCTL_SPECIAL(SGX_IOC_ENCLAVE_CREATE, IOC_W, do_ioctl_sgx_ioc_enclave_create, MK_PTR(MK_STRUCT(STRUCT_sgx_enclave_create)))
      IOCTL(TCGETS, IOC_R, MK_PTR(MK_STRUCT(STRUCT_termios)))
      IOCTL(TCSETS, IOC_W, MK_PTR(MK_STRUCT(STRUCT_termios)))
      IOCTL(TCSETSF, IOC_W, MK_PTR(MK_STRUCT(STRUCT_termios)))
