@@ -1,0 +1,587 @@
+[CEnclavePool /home/muqi/Downloads/linux-sgx/psw/urts/enclave.cpp:628] enter CEnclavePool constructor
+
+ 111111111111111111111111111111111111111before the initialize enclave
+
+
+ here in run_parser before the parse_dyn 
+
+
+ after has ctor section 
+
+!!!!here before get enclave creator 
+
+
+!!!!here after get enclave creator before encalve creteor 
+
+
+!!!!after  get_ex_feature_pointer before get metadata
+
+
+
+ inside get_metadata
+
+
+ here check the driver compatible
+
+
+ here after the driver compatible
+
+
+inside get_misc_attr
+
+
+
+ before get_plat_cap 
+
+
+
+ after get_plat_cap 
+
+
+
+ before Check misc_select/misc_mask
+
+
+
+ after Check misc_select/misc_mask
+
+
+!!!!after  get_metadata before get get_ex_feature_pointer
+
+
+!!!!after  get_ex_feature_pointer before get SGXLaunchToken
+
+
+
+inside get_misc_attr
+
+
+
+ before get_plat_cap 
+
+
+
+ after get_plat_cap 
+
+
+
+ before Check misc_select/misc_mask
+
+
+
+ after Check misc_select/misc_mask
+
+[build_secs /home/muqi/Downloads/linux-sgx/psw/urts/loader.cpp:517] Enclave start addr. = 0x7fd8b8000000, Size = 0x1000000, 16384 KB
+
+
+after the enclave initialize!!!!!!! ret is 0
+
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+inside initalize of EnclavecreaterHW
+
+
+ open /dev/sgx/enclave 
+before the ecall in enclave
+before enter enclave the fn is -1
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+
+
+ finish the get_enclave_creator()->initialize( , ret is 0
+
+ open /dev/sgx/enclave 
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+set is 0!!!!!!!!
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+set is 0!!!!!!!!
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+set is 0!!!!!!!!
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ open /dev/sgx/enclave 
+
+
+ after loader.set_memory_protection() , ret is 0
+
+ open /dev/sgx/enclave 
+before the ecall in enclave
+before enter enclave the fn is 18
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 19
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 20
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 21
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 22
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 8
+Checksum(0x0x7ffcda15f110, 100) = 0xfffd4143
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 9
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 10
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 11
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 17
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 12
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 13
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 14
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 16
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 15
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 0
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 1
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 2
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 3
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 4
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 5
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 6
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 7
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 23
+before the ecall in enclave
+before enter enclave the fn is 24
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 24
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 4103alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 25
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 26
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 27
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 28
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+before the ecall in enclave
+before enter enclave the fn is 29
+before the ecall in enclave
+before enter enclave the fn is 29
+before the ecall in enclave
+before enter enclave the fn is 29
+before the ecall in enclave
+before enter enclave the fn is 29
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+Info: executing thread synchronization, please wait...  
+before the ecall in enclave
+before enter enclave the fn is 31
+before the ecall in enclave
+before enter enclave the fn is 30
+before the ecall in enclave
+before enter enclave the fn is 31
+before the ecall in enclave
+before enter enclave the fn is 31
+before the ecall in enclave
+before enter enclave the fn is 31
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+
+in the do_ecall, after the enter enclave
+!!!after the ecall in enclave, ret is 0alright, before return trt uts error
+
+
+ open /dev/sgx/enclave 
+Info: SampleEnclave successfully returned.
+Enter a character before exit ...
