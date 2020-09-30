@@ -1,0 +1,7 @@
+000000000000c640 T enclave_entry
+0000000000000000 A enclave.so
+000000000000d180 R g_global_data
+0000000000011508 B g_peak_heap_used
+0000000000011518 B g_peak_rsrv_mem_committed
+                 w ippcpSetCpuFeatures
+                 w _Z9pcl_entryPvS_
