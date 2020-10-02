@@ -5720,7 +5720,7 @@ typedef unsigned long u64;
 u32 sgx_xsave_size_tbl[64];
 
 
-#if 0
+
 static u32 sgx_calc_ssaframesize(u32 miscselect, u64 xfrm)
 {
 	u32 size_max = PAGE_SIZE;
@@ -5741,9 +5741,9 @@ static u32 sgx_calc_ssaframesize(u32 miscselect, u64 xfrm)
 
 	return (size_max + PAGE_SIZE - 1) >> PAGE_SHIFT;
 }
-#endif 
+ 
 
-#if 0
+
 static struct sgx_encl *sgx_encl_alloc(struct sgx_secs *secs)
 {
 	unsigned long ssaframesize = 0;
@@ -5806,7 +5806,7 @@ static struct sgx_encl *sgx_encl_alloc(struct sgx_secs *secs)
 
 static int sgx_encl_create(struct sgx_secs *secs)
 {
-#if 0
+
 	struct sgx_pageinfo pginfo;
 	struct sgx_secinfo secinfo;
 	struct sgx_encl *encl;
@@ -5851,6 +5851,7 @@ static int sgx_encl_create(struct sgx_secs *secs)
 	
     //secs_vaddr = sgx_get_page(secs_epc);
 
+    	memset(&pginfo, 0, sizeof(pginfo));
 	pginfo.srcpge = (unsigned long)secs;
 	pginfo.linaddr = 0;
 	pginfo.secinfo = (unsigned long)&secinfo;
@@ -5914,17 +5915,17 @@ out:
 		kref_put(&encl->refcount, sgx_encl_release);
 	return ret;
     */
-#endif 
+
    return 0;
 }
-#endif 
+ 
 
 
 
 static long sgx_ioc_enclave_create(unsigned int cmd,
 				   unsigned long arg)
 {
-#if 0 
+ 
     //the original code is as followed:
     //struct sgx_enclave_create *createp = (struct sgx_enclave_create *)arg;
 	//void __user *src = (void __user *)createp->src;
@@ -5964,7 +5965,7 @@ static long sgx_ioc_enclave_create(unsigned int cmd,
 	ret = sgx_encl_create(secs);
 
     free(secs);
-#endif 
+ 
 	return 0;
 }
 
@@ -5975,11 +5976,10 @@ static abi_long do_ioctl_sgx_ioc_enclave_create(const IOCTLEntry *ie, uint8_t *b
     //abi_long ret;
     qemu_log_mask(LOG_UNIMP,
                       "In side do_ioctl_sgx_ioc_enclave_create\n");
-#if 0
     if(DEBUG_SGX){
         printf("\n in do_ioctl_sgx_ioc_enclave_create arg is %ld, cmd is %d \n", arg, cmd);
     }
-#endif 
+
     return (abi_long) sgx_ioc_enclave_create(cmd, arg);
 }
 
