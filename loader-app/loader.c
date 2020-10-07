@@ -46,6 +46,10 @@ int main() {
                      : 
                      : "r" (rax), "r" (test), "r" (tcs), "r" (index)
 		     : "rax", "rcx");
-	 i = test(0);
 
+	 volatile int ret_comp;
+	 ret_comp = 100;
+	 ret_comp++;
+
+	 printf("Postprocessing:%d \n", ret_comp);
 }

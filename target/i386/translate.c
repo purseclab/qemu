@@ -7340,6 +7340,46 @@ static target_ulong disas_insn(DisasContext *s, CPUState *cpu)
     case 0x101:
         modrm = x86_ldub_code(env, s);
         switch (modrm) {
+	case 0xd7: /* ENCLU insn */
+		/* push rbx */
+		//gen_op_mov_v_reg(s,MO_64,s->T0,3);
+		//gen_jr(s, cpu_regs[3]);
+		//gen_helper_enclu(cpu_env, tcg_const_i64(s->pc));
+		//gen_jmp_im(s, ((CPUX86State *)cpu->env_ptr)->regs[R_EBX]);
+		//gen_jmp_im(s, cpu_regs[3]);
+		//gen_op_jmp_v(cpu_regs[3]);
+		//s->is_jmp = DISAS_NORETURN;
+#if 0
+		gen_push_v(s, s->T0);
+		/* return */
+		ot = gen_pop_T0(s);
+		gen_pop_update(s, ot);
+		gen_op_jmp_v(s->T0);
+		gen_bnd_jmp(s);
+		gen_jr(s, s->T0);
+#endif 
+
+		////////////////////////////PushRBX+ RET/////////////////
+		//Push RBX
+		//gen_op_mov_v_reg(s, MO_64, s->T0, 3);
+		//gen_push_v(s, s->T0);
+		//RETQ
+#if 0
+		ot = gen_pop_T0(s);
+		gen_pop_update(s, ot);
+		/* Note that gen_pop_T0 uses a zero-extending load.  */
+		gen_op_jmp_v(s->T0); 
+		gen_bnd_jmp(s);
+		gen_jr(s, s->T0);  
+#endif 
+
+		///////////////////////////JUMP RBX //////////////////////
+		ot = MO_64;
+		gen_op_mov_v_reg(s, ot, s->T0, 3);
+		gen_op_jmp_v(s->T0);
+		gen_bnd_jmp(s);
+		gen_jr(s, s->T0);
+		break;
         CASE_MODRM_MEM_OP(0): /* sgdt */
             gen_svm_check_intercept(s, pc_start, SVM_EXIT_GDTR_READ);
             gen_lea_modrm(env, s, modrm);
@@ -8639,4 +8679,11 @@ void restore_state_to_opc(CPUX86State *env, TranslationBlock *tb,
     if (cc_op != CC_OP_DYNAMIC) {
         env->cc_op = cc_op;
     }
+}
+
+
+void helper_enclu(CPUX86State *env, uint64_t next_eip) {
+    //env->cregs.CR_NEXT_EIP = next_eip;
+    env->eip = env->regs[R_EBX];    
+    //env->cregs.CR_EXIT_EIP = env->regs[R_EBX];
 }
