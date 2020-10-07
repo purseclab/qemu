@@ -34,11 +34,20 @@ int main() {
 	 tcs_t *tcs = (tcs_t *)(pointer + 0x20000);
 	 int index = 1;
 	 unsigned long long ret_val= 0;
+	 char ms[100];
+	 ms[0]=1;
 
 	 arch_prctl(ARCH_SET_GS, buffer);
+	 /* 
+	  *  *      edi >=  0 - ecall
+	  *      edi == -1 - do_init_enclave
+	  *      edi == -2 - oret
+	  *
+	  * */
 	 __asm__ __volatile__("mov %1, %%rax\n\t"
 			      "mov %3, %%rbx\n\t"
 			      "mov %4, %%edi\n\t"
+			      "mov %5, %%rsi\n\t"
 			      "add $2, %%rcx\n\t"
 			      "lea .RETPOINT(%%rip), %%rcx\n\t"
 			      "call *%2 \n\t"
@@ -46,8 +55,8 @@ int main() {
 			      "nop\n\t"
 			      "mov %%rax,%0"
                      : "=r" (ret_val)
-                     : "r" (rax), "r" (test), "r" (tcs), "r" (index)
-		     : "rax", "rcx", "memory");
+                     : "r" (rax), "r" (test), "r" (tcs), "r" (index), "r" (&ms)
+		     : "rax", "rcx", "rsi", "edi", "rbx", "memory");
 
 	 volatile int ret_comp;
 	 ret_comp = 100;
