@@ -29,6 +29,8 @@ DEF_HELPER_1(aas, void, env)
 DEF_HELPER_1(daa, void, env)
 DEF_HELPER_1(das, void, env)
 
+DEF_HELPER_2(enclu, void, env, i64)
+
 DEF_HELPER_2(lsl, tl, env, tl)
 DEF_HELPER_2(lar, tl, env, tl)
 DEF_HELPER_2(verr, void, env, tl)
