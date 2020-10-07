@@ -33,19 +33,21 @@ int main() {
 	 char *pointer = malloc(sizeof(tcs_t) + 0x20000);
 	 tcs_t *tcs = (tcs_t *)(pointer + 0x20000);
 	 int index = 1;
+	 unsigned long long ret_val= 0;
 
 	 arch_prctl(ARCH_SET_GS, buffer);
-	 __asm__ __volatile__("mov %0, %%rax\n\t"
-			      "mov %2, %%rbx\n\t"
-			      "mov %3, %%edi\n\t"
+	 __asm__ __volatile__("mov %1, %%rax\n\t"
+			      "mov %3, %%rbx\n\t"
+			      "mov %4, %%edi\n\t"
 			      "add $2, %%rcx\n\t"
 			      "lea .RETPOINT(%%rip), %%rcx\n\t"
-			      "call *%1 \n\t"
+			      "call *%2 \n\t"
 			      ".RETPOINT:\n\t"
-			      "nop"
-                     : 
+			      "nop\n\t"
+			      "mov %%rax,%0"
+                     : "=r" (ret_val)
                      : "r" (rax), "r" (test), "r" (tcs), "r" (index)
-		     : "rax", "rcx");
+		     : "rax", "rcx", "memory");
 
 	 volatile int ret_comp;
 	 ret_comp = 100;
