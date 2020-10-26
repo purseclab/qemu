@@ -260,7 +260,7 @@ $(Signed_Enclave_Name): $(Enclave_Name)
 	@echo "SIGN =>  $@"
 
 load:
-	gcc ./loader.c -g -fPIE -ldl -o loader
+	gcc ./loader.c -g -fPIE -ldl -lexplain -o loader
 
 .PHONY: clean
 
@@ -271,3 +271,7 @@ temp:
 	gcc -c -g ./ex.c -o ./ex.o
 	gcc -c -g ./asm.S -o ./asm.o
 	gcc -g ./ex.o ./asm.o -o fin
+	objdump -S ./fin > ./fin.S
+
+run:
+	../build/qemu-x86_64 -cpu max ./loader

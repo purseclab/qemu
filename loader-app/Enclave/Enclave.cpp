@@ -43,7 +43,8 @@ extern "C" void libsfuzz_abort () {
 	return;
 }
 #pragma GCC pop_options
-
+extern int relocate_enclave(void * base);
+extern "C" int enter_enclave(int index, void *ms, void *tcs, int cssa);
 int test() {
 	volatile int i =0;
 	i=43;
