@@ -5951,7 +5951,7 @@ static long sgx_ioc_enclave_create(unsigned int cmd,
         printf("\n 11111 sizeof secs is %ld, sec in sgx_ioc_enclave_create is %p, the size of secs is %ld\n", sizeof(*secs), (void *)secs, secs->size);
 
 	//abi_long copy_from_user(void *hptr, abi_ulong gaddr, size_t len)
-	
+#if 0 	
     ret = copy_from_user((void *)secs, (abi_ulong) src, (size_t) sizeof(*secs));
     if (ret) {
         printf("\n error in copy from user secs is %p, src is %p, (size_t) sizeof(*secs) is %ld\n", (void *)secs,(void *)src,(size_t) sizeof(*secs) );
@@ -5961,24 +5961,27 @@ static long sgx_ioc_enclave_create(unsigned int cmd,
     if(DEBUG_SGX){
         printf("\n 22222 sizeof secs is %ld, sec in sgx_ioc_enclave_create is %p, the size of secs is %ld\n", sizeof(*secs), (void *)secs, secs->size);
     }
+#endif 
     
 	ret = sgx_encl_create(secs);
 
     free(secs);
  
-	return 0;
+	return ret;
 }
 
 
 static abi_long do_ioctl_sgx_ioc_enclave_create(const IOCTLEntry *ie, uint8_t *buf_temp,
                                      int fd, int cmd, abi_long arg)
 {
+#if 0
     //abi_long ret;
     qemu_log_mask(LOG_UNIMP,
                       "In side do_ioctl_sgx_ioc_enclave_create\n");
     if(DEBUG_SGX){
         printf("\n in do_ioctl_sgx_ioc_enclave_create arg is %ld, cmd is %d \n", arg, cmd);
     }
+#endif 
 
     return (abi_long) sgx_ioc_enclave_create(cmd, arg);
 }
