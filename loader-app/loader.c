@@ -38,6 +38,30 @@ typedef struct _tcs_t
 	uint8_t             reserved[TCS_RESERVED_LENGTH];  /* (72) */
 }tcs_t;
 
+typedef enum
+{
+    SDK_VERSION_1_5,
+    SDK_VERSION_2_0,
+    SDK_VERSION_2_1,
+    SDK_VERSION_2_2
+} sdk_version_t;
+
+typedef struct _system_features
+{
+    uint64_t cpu_features;
+    sdk_version_t version;
+    /* system feature set array. MSb of each element indicates whether this is
+     * the last element. This will help tRTS to know when it can stop walking
+     * through the array searching for certain features.
+    */
+    uint64_t system_feature_set[1];
+    uint32_t cpuinfo_table[8][4];
+    uint8_t* sealed_key;
+    uint64_t size;
+    uint64_t cpu_features_ext;
+    uint32_t cpu_core_num;
+}system_features_t;
+
 #define ECMD_ECALL           0
 #define ECMD_INIT_ENCLAVE   -1
 #define ECMD_ORET           -2
@@ -63,6 +87,58 @@ typedef struct _global_data_t
 } global_data_t;
 
 
+typedef struct _thread_data_t
+{
+    unsigned long long  self_addr;
+    unsigned long long  last_sp;            /* set by urts, relative to TCS */
+    unsigned long long  stack_base_addr;    /* set by urts, relative to TCS */
+    unsigned long long  stack_limit_addr;   /* set by urts, relative to TCS */
+    unsigned long long  first_ssa_gpr;      /* set by urts, relative to TCS */
+    unsigned long long  stack_guard;        /* GCC expects start_guard at 0x14 on x86 and 0x28 on x64 */
+
+    unsigned long long  flags;
+    unsigned long long  xsave_size;         /* in bytes (se_ptrace.c needs to know its offset).*/
+    unsigned long long  last_error;         /* init to be 0. Used by trts. */
+
+#ifdef TD_SUPPORT_MULTI_PLATFORM
+    unsigned long long  m_next;             /* next TD used by trusted thread library (of type "struct _thread_data *") */
+#else
+    struct _thread_data_t *m_next;
+#endif
+    unsigned long long  tls_addr;           /* points to TLS pages */
+    unsigned long long  tls_array;          /* points to TD.tls_addr relative to TCS */
+#ifdef TD_SUPPORT_MULTI_PLATFORM
+    unsigned long long  exception_flag;     /* mark how many exceptions are being handled */
+#else
+    intptr_t    exception_flag;
+#endif
+    unsigned long long  cxx_thread_info[6];
+    unsigned long long  stack_commit_addr;
+} thread_data_t;
+
+typedef struct _ocall_context_t
+{
+    uintptr_t shadow0;
+    uintptr_t shadow1;
+    uintptr_t shadow2;
+    uintptr_t shadow3;
+    uintptr_t ocall_flag;
+    uintptr_t ocall_index;
+    uintptr_t pre_last_sp;
+    uintptr_t r15;
+    uintptr_t r14;
+    uintptr_t r13;
+    uintptr_t r12;
+    uintptr_t xbp;
+    uintptr_t xdi;
+    uintptr_t xsi;
+    uintptr_t xbx;
+    uintptr_t reserved[3];
+    uintptr_t ocall_depth;
+    uintptr_t ocall_ret;
+} ocall_context_t;
+
+
 /**********************
  *  0 - DLSYM Loading *
  *  1 - MMAP Loading  *
@@ -70,6 +146,7 @@ typedef struct _global_data_t
 #define LOADING 1
 
 int main() {
+	 void (*ret)() = __builtin_extract_return_addr (__builtin_return_address (0));
 	// get a handle to the library that contains 'puts' function
 #if LOADING==0
 	void * handle = dlopen ("./enclave.signed.so", RTLD_NOW);
@@ -118,10 +195,10 @@ int main() {
 		printf("Base: %llx End:%llx \n", (unsigned long long)(handle + shdr[i].sh_offset),
 				(unsigned long long)(handle + shdr[i].sh_offset + shdr[i].sh_size));
 #endif 
-
-		if ( (unsigned long long)(handle + shdr[i].sh_offset) < 0x4002d5c800  &&
-				(unsigned long long)(handle + shdr[i].sh_offset + shdr[i].sh_size) > 0x4002d5c800) {
-			printf("Them section is: %s \n", sh_strtab_p + shdr[i].sh_name);
+#define ADDR 0x4002d5fde0
+		if ( (unsigned long long)(handle + shdr[i].sh_offset) < ADDR  &&
+				(unsigned long long)(handle + shdr[i].sh_offset + shdr[i].sh_size) > ADDR) {
+			printf("Them section is: %s \n \n \n \n \n", sh_strtab_p + shdr[i].sh_name);
 		}
 #if 0
 		if (shdr[i].sh_offset > 0x10fe8) {
@@ -136,7 +213,12 @@ int main() {
 			break;
 	}
 
-	memset(handle + shdr[i].sh_offset, 0, shdr[i].sh_size);
+	//memset(handle + shdr[i].sh_offset, 0, shdr[i].sh_size);
+	//
+	unsigned long long * pcl_entry = handle + shdr[i].sh_offset + 0xeec; 
+	*pcl_entry = 0x0;
+	unsigned long long * ippcpSetCpuFeatures= handle + shdr[i].sh_offset +0xef4;
+	*ippcpSetCpuFeatures = 0x0;
 
 	/* Populate memset TODO: Fixme */
 	unsigned long long * memset_pointer = handle + shdr[i].sh_offset + 0xf34;
@@ -152,6 +234,7 @@ int main() {
 	global_data_t * global_data = (global_data_t *) (handle + shdr[i].sh_offset);
 	void * SSA= 0x680 + handle + shdr[i].sh_offset;
 	global_data->heap_size = 4096;
+	global_data->enclave_size = sb.st_size;
 	global_data->heap_offset = sb.st_size;
 	unsigned long long heap_base = handle + sb.st_size;
 	heap_base = (heap_base & ~(4096-1)) + (32*4096);
@@ -228,8 +311,57 @@ int main() {
 	tcs_t *tcs = (tcs_t *)(pointer + 0x20000);
 	int index = ECMD_INIT_ENCLAVE;
 	unsigned long long ret_val= 0;
-	char ms[100];
-	ms[0]=1;
+	char ms[sizeof(system_features_t)];
+	/* Populate the CPU features */
+	system_features_t * info = ms;
+	//TODO:cmon dude read for the cpu reg
+	info->cpu_features= 251658239ull;
+	info->cpu_features_ext = 9007268796301311ull;
+	info->system_feature_set[0] = 13835058055282163712ull;
+	info->sealed_key = 0x0;
+	info->size = 176;
+	info->version = SDK_VERSION_1_5;
+
+	memset(info->cpuinfo_table, 0, sizeof(info->cpuinfo_table));
+
+	info->cpuinfo_table[0][0] = 22;
+	info->cpuinfo_table[0][1] = 1970169159;
+	info->cpuinfo_table[0][2] = 1818588270;
+	info->cpuinfo_table[0][3] = 1231384169;
+	info->cpuinfo_table[1][0] = 591593;
+        info->cpuinfo_table[1][1] = 51382272;
+        info->cpuinfo_table[1][2] = 2147154943;
+        info->cpuinfo_table[1][3] = 3219913727;
+	info->cpuinfo_table[4][0] = 469778721;
+          info->cpuinfo_table[4][1] = 29360191;
+          info->cpuinfo_table[4][2] = 63;
+          info->cpuinfo_table[4][3] = 0;
+	info->cpuinfo_table[7][0] = 0;
+          info->cpuinfo_table[7][1] = 43806655;
+          info->cpuinfo_table[7][2] = 0;
+          info->cpuinfo_table[7][3] = 2617255424;
+      	
+
+	
+
+
+
+
+	thread_data_t * data = malloc(sizeof(thread_data_t));
+	*(unsigned long long *)buffer = data;
+	memset(data,0,sizeof(thread_data_t));
+
+	/* Let make this check fail: thread_data->stack_base_addr == thread_data->last_sp */
+	data->stack_base_addr = buffer;
+
+	/* Mismatch case */
+	ocall_context_t * ctxt = malloc(sizeof(ocall_context_t));
+	data->last_sp = ctxt;
+       	memset(ctxt,0,sizeof(ocall_context_t));
+	ctxt->ocall_flag = 0x4F434944;	
+
+	/* Match case */
+	data->last_sp = data->stack_base_addr;
 
 	arch_prctl(ARCH_SET_GS, buffer);
 	/* 
@@ -254,7 +386,7 @@ int main() {
 			: "rax", "rcx", "rsi", "edi", "rbx", "memory");
 
 
-	index = 1;
+	index = 0;
 
 	__asm__ __volatile__("mov %1, %%rax\n\t"
                         "mov %3, %%rbx\n\t"
@@ -275,4 +407,5 @@ int main() {
 	ret_comp++;
 
 	printf("Postprocessing:%d \n", ret_comp);
+	ret();
 }

@@ -51,3 +51,10 @@ int test() {
 	i++;
 	return (int)i;
 }
+
+int test2() {
+	volatile int i =0;
+        i=43;
+        i++;
+        return (int)i;
+}
