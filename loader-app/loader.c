@@ -145,6 +145,23 @@ typedef struct _ocall_context_t
  **********************/
 #define LOADING 1
 
+unsigned long long find_symbol(char * sym, unsigned long long handle, unsigned long long strtab, unsigned long long symbol_base,int num_entries) {
+
+	/* TODO: Use DT_GNU_HASH or DT_HASH */
+
+        unsigned long long idx =0;
+	Elf64_Sym * symbol;
+        while (idx < num_entries) {
+                symbol = (sizeof(Elf64_Sym) * idx) + symbol_base;
+                printf("%d:%s \r\n", symbol->st_value, strtab + symbol->st_name);
+		if (strcmp(strtab + symbol->st_name, sym) == 0)
+			break;
+                idx++;
+        }
+	return symbol->st_value + handle;
+
+}
+
 int main() {
 	 void (*ret)() = __builtin_extract_return_addr (__builtin_return_address (0));
 	// get a handle to the library that contains 'puts' function
@@ -194,8 +211,12 @@ int main() {
 				sh_strtab_p + shdr[i].sh_name);
 		printf("Base: %llx End:%llx \n", (unsigned long long)(handle + shdr[i].sh_offset),
 				(unsigned long long)(handle + shdr[i].sh_offset + shdr[i].sh_size));
+		if (SHF_ALLOC & shdr[i].sh_flags)
+			printf("LMA: %llx \n",(unsigned long long)(handle + shdr[i].sh_link));
+
+		printf("Raw offset:%llx link:%llx flags:%llx info:%llx addr: %llx \n", shdr[i].sh_offset, shdr[i].sh_link, shdr[i].sh_flags, shdr[i].sh_info, shdr[i].sh_addr);
 #endif 
-#define ADDR 0x4002d5fde0
+#define ADDR 0x4002d60e08
 		if ( (unsigned long long)(handle + shdr[i].sh_offset) < ADDR  &&
 				(unsigned long long)(handle + shdr[i].sh_offset + shdr[i].sh_size) > ADDR) {
 			printf("Them section is: %s \n \n \n \n \n", sh_strtab_p + shdr[i].sh_name);
@@ -216,13 +237,13 @@ int main() {
 	//memset(handle + shdr[i].sh_offset, 0, shdr[i].sh_size);
 	//
 	unsigned long long * pcl_entry = handle + shdr[i].sh_offset + 0xeec; 
-	*pcl_entry = 0x0;
-	unsigned long long * ippcpSetCpuFeatures= handle + shdr[i].sh_offset +0xef4;
-	*ippcpSetCpuFeatures = 0x0;
+	//*pcl_entry = 0x0;
+	//unsigned long long * ippcpSetCpuFeatures= handle + shdr[i].sh_offset +0xef4;
+	//*ippcpSetCpuFeatures = 0x0;
 
 	/* Populate memset TODO: Fixme */
-	unsigned long long * memset_pointer = handle + shdr[i].sh_offset + 0xf34;
-	*memset_pointer = &memset;
+	//unsigned long long * memset_pointer = handle + shdr[i].sh_offset + 0xf34;
+	//*memset_pointer = &memset;
 
 	/* Setup heap */
 	i=0;
@@ -267,7 +288,7 @@ int main() {
 	global_data->rsrv_offset = reserved_mem_handle - (unsigned long long)handle;
 #endif 
 
-#if 0
+#if 10
 	i =0;
 	for (; i < shnum; ++i) {
 		printf("%2d: %4d '%s'\n", i, shdr[i].sh_name,
@@ -275,7 +296,7 @@ int main() {
 		if (strcmp(sh_strtab_p + shdr[i].sh_name,".symtab")==0)
 			break;
 	}
-	Elf64_Sym * symbol = handle + shdr[i].sh_offset; //shdr[i].sh_size
+	unsigned long long symbol_base = handle + shdr[i].sh_offset; //shdr[i].sh_size
 	unsigned long long size = shdr[i].sh_size;
 	
 	for (i=0; i < shnum; ++i) {
@@ -285,11 +306,18 @@ int main() {
 	char * strtab = handle + shdr[i].sh_offset; 
 
 	int num_entries = size/sizeof(Elf64_Sym);
-	int idx =0;
-	while (idx < num_entries) {
-		printf("%s \r\n", strtab[symbol[idx].st_name]);
-		idx++;
-	}
+
+	pcl_entry = find_symbol("__memset_vp", handle, strtab, symbol_base, num_entries);
+	*pcl_entry = &memset;
+
+	/* relocate sections */
+	i=0;
+	for (; i < shnum; ++i) {
+                if (shdr[i].sh_addr && shdr[i].sh_addr != shdr[i].sh_offset) {
+			printf("Relocating %s\n",sh_strtab_p + shdr[i].sh_name); 
+                        memcpy(handle + shdr[i].sh_addr, handle + shdr[i].sh_offset, shdr[i].sh_size);
+		}
+        }
 
 #endif 
 

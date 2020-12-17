@@ -17,6 +17,7 @@ extern "C" {
 #endif
 
 int test(void);
+int test2(void);
 
 
 #ifdef __cplusplus

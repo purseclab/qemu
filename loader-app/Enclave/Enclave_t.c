@@ -31,6 +31,10 @@ typedef struct ms_test_t {
 	int ms_retval;
 } ms_test_t;
 
+typedef struct ms_test2_t {
+	int ms_retval;
+} ms_test2_t;
+
 static sgx_status_t SGX_CDECL sgx_test(void* pms)
 {
 	CHECK_REF_POINTER(pms, sizeof(ms_test_t));
@@ -49,13 +53,32 @@ static sgx_status_t SGX_CDECL sgx_test(void* pms)
 	return status;
 }
 
+static sgx_status_t SGX_CDECL sgx_test2(void* pms)
+{
+	CHECK_REF_POINTER(pms, sizeof(ms_test2_t));
+	//
+	// fence after pointer checks
+	//
+	sgx_lfence();
+	ms_test2_t* ms = SGX_CAST(ms_test2_t*, pms);
+	sgx_status_t status = SGX_SUCCESS;
+
+
+
+	ms->ms_retval = test2();
+
+
+	return status;
+}
+
 SGX_EXTERNC const struct {
 	size_t nr_ecall;
-	struct {void* ecall_addr; uint8_t is_priv; uint8_t is_switchless;} ecall_table[1];
+	struct {void* ecall_addr; uint8_t is_priv; uint8_t is_switchless;} ecall_table[2];
 } g_ecall_table = {
-	1,
+	2,
 	{
 		{(void*)(uintptr_t)sgx_test, 0, 0},
+		{(void*)(uintptr_t)sgx_test2, 0, 0},
 	}
 };
 

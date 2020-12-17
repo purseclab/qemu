@@ -275,3 +275,6 @@ temp:
 
 run:
 	../build/qemu-x86_64 -cpu max ./loader
+
+rund:
+	../build/qemu-x86_64 -cpu max -g 1234 ./loader

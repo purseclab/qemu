@@ -19,6 +19,7 @@ extern "C" {
 
 
 sgx_status_t test(sgx_enclave_id_t eid, int* retval);
+sgx_status_t test2(sgx_enclave_id_t eid, int* retval);
 
 #ifdef __cplusplus
 }

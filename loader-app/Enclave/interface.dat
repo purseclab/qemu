@@ -1038,3 +1038,6 @@ ecall_increase_counter
 ecall_producer 
 ecall_consumer 
 EDL: 
+EDL:Enclave 
+test 
+test2 

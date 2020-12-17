@@ -59,6 +59,7 @@ enclave {
 
     trusted {
 		public int test();
+		public int test2();
 	};
 	/* 
     untrusted {
