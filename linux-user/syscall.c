@@ -139,6 +139,7 @@
 #include "qapi/error.h"
 #include "fd-trans.h"
 #include "tcg/tcg.h"
+extern unsigned int afl_forksrv_pid;
 
 #ifndef CLONE_IO
 #define CLONE_IO                0x80000000      /* Clone io context */
@@ -12462,6 +12463,19 @@ static abi_long do_syscall1(void *cpu_env, int num, abi_long arg1,
     case TARGET_NR_tgkill:
         return get_errno(safe_tgkill((int)arg1, (int)arg2,
                          target_to_host_signal(arg3)));
+	{
+          int pid  = (int)arg1,
+              tgid = (int)arg2,
+              sig  = (int)arg3;
+
+          /* Not entirely sure if the below is correct for all architectures. */
+
+          if(afl_forksrv_pid && afl_forksrv_pid == pid && sig == SIGABRT)
+              pid = tgid = getpid();
+
+          return get_errno(safe_tgkill(pid, tgid, target_to_host_signal(sig)));
+
+        }
 
 #ifdef TARGET_NR_set_robust_list
     case TARGET_NR_set_robust_list:
