@@ -7374,11 +7374,18 @@ static target_ulong disas_insn(DisasContext *s, CPUState *cpu)
 #endif 
 
 		///////////////////////////JUMP RBX //////////////////////
+#if 0
 		ot = MO_64;
 		gen_op_mov_v_reg(s, ot, s->T0, 3);
 		gen_op_jmp_v(s->T0);
 		gen_bnd_jmp(s);
 		gen_jr(s, s->T0);
+#endif 
+		gen_helper_enclu(cpu_env, tcg_const_i64(s->pc));
+		gen_op_mov_v_reg(s, ot, s->T0, R_EAX);
+                gen_op_jmp_v(s->T0);
+                gen_bnd_jmp(s);
+                gen_jr(s, s->T0);
 		break;
         CASE_MODRM_MEM_OP(0): /* sgdt */
             gen_svm_check_intercept(s, pc_start, SVM_EXIT_GDTR_READ);
@@ -8682,8 +8689,22 @@ void restore_state_to_opc(CPUX86State *env, TranslationBlock *tb,
 }
 
 
+#define SE_EREPORT    0
+#define SE_EGETKEY    1
+#define SE_EENTER     2
+#define SE_EEXIT      4
 void helper_enclu(CPUX86State *env, uint64_t next_eip) {
     //env->cregs.CR_NEXT_EIP = next_eip;
-    env->eip = env->regs[R_EBX];    
+    //
+    switch(env->regs[R_EAX]) {
+	    case SE_EEXIT:
+		    env->regs[R_EAX] = env->regs[R_EBX];
+		    break;
+
+	    case SE_EREPORT:
+		    env->regs[R_EAX] = next_eip;
+		    break;
+    }
+
     //env->cregs.CR_EXIT_EIP = env->regs[R_EBX];
 }
