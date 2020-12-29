@@ -274,7 +274,7 @@ temp:
 	objdump -S ./fin > ./fin.S
 
 run:
-	../build/qemu-x86_64 -cpu max ./loader
+	../build/qemu-x86_64 -cpu max ./loader s
 
 rund:
-	../build/qemu-x86_64 -cpu max -g 1234 ./loader
+	../build/qemu-x86_64 -cpu max -g 1234 ./loader s

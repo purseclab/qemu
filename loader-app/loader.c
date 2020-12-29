@@ -162,7 +162,7 @@ unsigned long long find_symbol(char * sym, unsigned long long handle, unsigned l
 
 }
 
-int main() {
+int main(int argc, char* argv[]) {
 	 void (*ret)() = __builtin_extract_return_addr (__builtin_return_address (0));
 	// get a handle to the library that contains 'puts' function
 #if LOADING==0
@@ -433,6 +433,14 @@ int main() {
 	volatile int ret_comp;
 	ret_comp = 100;
 	ret_comp++;
+
+	char c = getchar();
+
+	if (c == 'a') {
+		abort();
+	} else  {
+		exit(0);
+	}
 
 	printf("Postprocessing:%d \n", ret_comp);
 	ret();
