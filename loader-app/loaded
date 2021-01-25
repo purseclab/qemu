@@ -1,0 +1,75 @@
+ 0:    0 ''
+Base: 4002d4f000 End:4002d4f000 
+ 1:   27 '.interp'
+Base: 4002d4f2a8 End:4002d4f2c4 
+ 2:   35 '.note.gnu.build-id'
+Base: 4002d4f2c4 End:4002d4f2e8 
+ 3:   54 '.gnu.hash'
+Base: 4002d4f2e8 End:4002d4f320 
+ 4:   64 '.dynsym'
+Base: 4002d4f320 End:4002d4f3e0 
+ 5:   72 '.dynstr'
+Base: 4002d4f3e0 End:4002d4f458 
+ 6:   80 '.gnu.version'
+Base: 4002d4f458 End:4002d4f468 
+ 7:   93 '.gnu.version_d'
+Base: 4002d4f468 End:4002d4f4a0 
+ 8:  108 '.rela.dyn'
+Base: 4002d4f4a0 End:4002d4f578 
+ 9:  118 '.plt'
+Base: 4002d50000 End:4002d50010 
+10:  123 '.plt.got'
+Base: 4002d50010 End:4002d50020 
+11:  132 '.text'
+Base: 4002d50020 End:4002d5abe0 
+12:  138 '.nipx'
+Base: 4002d5abe0 End:4002d5ba3f 
+13:  144 '.rodata'
+Base: 4002d5c000 End:4002d5c14e 
+14:  152 '.niprod'
+Base: 4002d5c180 End:4002d5ca40 
+15:  160 '.eh_frame_hdr'
+Base: 4002d5ca40 End:4002d5ced4 
+16:  174 '.eh_frame'
+Base: 4002d5ced8 End:4002d5e140 
+17:  184 '.fini_array'
+Base: 4002d5eda0 End:4002d5edc0 
+18:  196 '.data.rel.ro'
+Base: 4002d5edc0 End:4002d5ee40 
+19:  209 '.dynamic'
+Base: 4002d5ee40 End:4002d5efc0 
+20:  127 '.got'
+Base: 4002d5efc0 End:4002d5efe8 
+21:  218 '.data'
+Base: 4002d5f000 End:4002d5f09f 
+22:  224 '.nipd'
+Base: 4002d5f0a0 End:4002d5f0a8 
+23:  230 '.bss'
+Base: 4002d5f0a8 End:4002d5f6b8 
+24:  235 '.comment'
+Base: 4002d5f0a8 End:4002d5f0d1 
+25:  244 '.note.sgxmeta'
+Base: 4002d5f0d4 End:4002d640f0 
+Them section is: .note.sgxmeta 
+ 
+ 
+ 
+ 
+26:  258 '.debug_aranges'
+Base: 4002d640f0 End:4002d65090 
+27:  273 '.debug_info'
+Base: 4002d65090 End:4002d74d36 
+28:  285 '.debug_abbrev'
+Base: 4002d74d36 End:4002d779ba 
+29:  299 '.debug_line'
+Base: 4002d779ba End:4002d7d76c 
+30:  311 '.debug_str'
+Base: 4002d7d76c End:4002d80e8e 
+31:  322 '.debug_ranges'
+Base: 4002d80e8e End:4002d81e0e 
+32:    1 '.symtab'
+Base: 4002d81e10 End:4002d83958 
+33:    9 '.strtab'
+Base: 4002d83958 End:4002d84ac7 
+34:   17 '.shstrtab'
+Base: 4002d84ac7 End:4002d84c17

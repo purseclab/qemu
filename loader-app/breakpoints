@@ -1,0 +1,11 @@
+#b tb_find
+#b cpu_tb_exec
+#b translate-all.c:1126
+#b code_gen_alloc
+set follow-fork-mode parent
+b afl_forkserver
+#b afl_request_tsl if pc==274925471411
+b tb_gen_code if pc==274925471411
+c
+
+

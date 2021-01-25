@@ -1,0 +1,30 @@
+start_time        : 1610407332
+last_update       : 1610685476
+fuzzer_pid        : 3827
+cycles_done       : 164890
+execs_done        : 8410048
+execs_per_sec     : 30.25
+paths_total       : 1
+paths_favored     : 1
+paths_found       : 0
+paths_imported    : 0
+max_depth         : 1
+cur_path          : 0
+pending_favs      : 0
+pending_total     : 0
+variable_paths    : 0
+stability         : 100.00%
+bitmap_cvg        : 0.22%
+unique_crashes    : 0
+unique_hangs      : 0
+last_path         : 0
+last_crash        : 0
+last_hang         : 0
+execs_since_crash : 8410048
+exec_timeout      : 120
+afl_banner        : loader
+afl_version       : 2.56b
+target_mode       : qemu 
+command_line      : /home/arslan/Documents/afl-head/AFL/afl-fuzz -Q -m 20000000000000 -i ./in/ -o ./out/ /home/arslan/Documents/qemusgx/loader-app/loader
+slowest_exec_ms   : 1000
+peak_rss_mb       : not available while afl is running

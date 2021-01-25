@@ -155,13 +155,23 @@ unsigned long long find_symbol(char * sym, unsigned long long handle, unsigned l
                 symbol = (sizeof(Elf64_Sym) * idx) + symbol_base;
                 printf("%d:%s \r\n", symbol->st_value, strtab + symbol->st_name);
 		if (strcmp(strtab + symbol->st_name, sym) == 0)
-			break;
+			return symbol->st_value + handle;
                 idx++;
         }
-	return symbol->st_value + handle;
+	return 0;
 
 }
 
+void mymemcpy(void *dest, void *src, size_t n)
+{
+   // Typecast src and dest addresses to (char *)
+   char *csrc = (char *)src;
+   char *cdest = (char *)dest;
+
+   // Copy contents of src[] to dest[]
+   for (int i=0; i<n; i++)
+       cdest[i] = csrc[i];
+}
 int main(int argc, char* argv[]) {
 	 void (*ret)() = __builtin_extract_return_addr (__builtin_return_address (0));
 	// get a handle to the library that contains 'puts' function
@@ -171,8 +181,42 @@ int main(int argc, char* argv[]) {
 	int fd;
 	struct stat sb;
 	fd = open("./enclave.signed.so", O_RDONLY);
+	printf("Starting things \n");
 	fstat(fd, &sb);
-	void * handle = mmap (NULL, sb.st_size, PROT_WRITE | PROT_EXEC | PROT_READ, MAP_PRIVATE, fd, 0);
+	void * handle = mmap (NULL, sb.st_size + 0x400000, PROT_WRITE | PROT_EXEC | PROT_READ, MAP_PRIVATE, fd, 0);
+	/* TODO: Get the exact size of loaded image instead of just doing a buffer */
+#if 00
+	char* pointer1 = mmap((void *) ((unsigned long long )(handle + sb.st_size) & (unsigned long long)~(4096-1)),
+                          0x200000,
+                          PROT_READ | PROT_WRITE | PROT_EXEC,
+                           MAP_PRIVATE|MAP_ANONYMOUS|MAP_FIXED,
+                          -1,
+                          0);
+
+	if ((long long)pointer1 <= 0) {
+                char * err = explain_mmap((void *) ((unsigned long long)(handle + sb.st_size) & (unsigned long long)~(4096-1)),
+                            0x200000,
+                            PROT_READ | PROT_WRITE | PROT_EXEC,
+                             MAP_PRIVATE|MAP_ANONYMOUS|MAP_FIXED,
+                            -1,
+                            0);
+                printf("%s \n",err);
+        }
+#endif
+        /* Relocate the image */
+	char* pointer1 = mmap(NULL,
+			sb.st_size +0x400000,
+			PROT_READ | PROT_WRITE | PROT_EXEC,
+			 MAP_PRIVATE|MAP_ANONYMOUS,
+			 -1,
+			 0);
+
+	memcpy(pointer1, handle, sb.st_size);
+
+	munmap(handle, sb.st_size);
+
+	handle = pointer1;
+
 	ElfW(Ehdr) *header = handle;
 
 	/* Clear out BSS */
@@ -308,6 +352,7 @@ int main(int argc, char* argv[]) {
 	int num_entries = size/sizeof(Elf64_Sym);
 
 	pcl_entry = find_symbol("__memset_vp", handle, strtab, symbol_base, num_entries);
+	if (pcl_entry)
 	*pcl_entry = &memset;
 
 	/* relocate sections */
@@ -315,7 +360,7 @@ int main(int argc, char* argv[]) {
 	for (; i < shnum; ++i) {
                 if (shdr[i].sh_addr && shdr[i].sh_addr != shdr[i].sh_offset) {
 			printf("Relocating %s\n",sh_strtab_p + shdr[i].sh_name); 
-                        memcpy(handle + shdr[i].sh_addr, handle + shdr[i].sh_offset, shdr[i].sh_size);
+                        mymemcpy(handle + shdr[i].sh_addr, handle + shdr[i].sh_offset, shdr[i].sh_size);
 		}
         }
 
@@ -337,7 +382,7 @@ int main(int argc, char* argv[]) {
 	void *buffer = malloc(100 * sizeof(char));
 	char *pointer = malloc(sizeof(tcs_t) + 0x20000);
 	tcs_t *tcs = (tcs_t *)(pointer + 0x20000);
-	int index = ECMD_INIT_ENCLAVE;
+	unsigned int index = ECMD_INIT_ENCLAVE;
 	unsigned long long ret_val= 0;
 	char ms[sizeof(system_features_t)];
 	/* Populate the CPU features */
@@ -416,6 +461,13 @@ int main(int argc, char* argv[]) {
 
 	index = 0;
 
+	
+
+	/* Get index, weird indices are fine */
+	fgets(&index, sizeof(index), stdin);
+	index = index%3;
+	fgets(ms, sizeof(ms), stdin);
+
 	__asm__ __volatile__("mov %1, %%rax\n\t"
                         "mov %3, %%rbx\n\t"
                         "mov %4, %%edi\n\t"
@@ -434,13 +486,7 @@ int main(int argc, char* argv[]) {
 	ret_comp = 100;
 	ret_comp++;
 
-	char c = getchar();
-
-	if (c == 'a') {
-		abort();
-	} else  {
-		exit(0);
-	}
+	char * c = getchar();
 
 	printf("Postprocessing:%d \n", ret_comp);
 	ret();

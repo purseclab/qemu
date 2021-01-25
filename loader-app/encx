@@ -1,0 +1,413 @@
+
+./enclave.signed.so:     file format elf64-x86-64
+./enclave.signed.so
+architecture: i386:x86-64, flags 0x00000150:
+HAS_SYMS, DYNAMIC, D_PAGED
+start address 0x000000000000c6b3
+
+Program Header:
+    PHDR off    0x0000000000000040 vaddr 0x0000000000000040 paddr 0x0000000000000040 align 2**3
+         filesz 0x0000000000000268 memsz 0x0000000000000268 flags r--
+  INTERP off    0x00000000000002a8 vaddr 0x00000000000002a8 paddr 0x00000000000002a8 align 2**0
+         filesz 0x000000000000001c memsz 0x000000000000001c flags r--
+    LOAD off    0x0000000000000000 vaddr 0x0000000000000000 paddr 0x0000000000000000 align 2**12
+         filesz 0x0000000000000578 memsz 0x0000000000000578 flags r--
+    LOAD off    0x0000000000001000 vaddr 0x0000000000001000 paddr 0x0000000000001000 align 2**12
+         filesz 0x000000000000ba3f memsz 0x000000000000ba3f flags r-x
+    LOAD off    0x000000000000d000 vaddr 0x000000000000d000 paddr 0x000000000000d000 align 2**12
+         filesz 0x0000000000002140 memsz 0x0000000000002140 flags r--
+    LOAD off    0x000000000000fda0 vaddr 0x0000000000010da0 paddr 0x0000000000010da0 align 2**12
+         filesz 0x0000000000000308 memsz 0x0000000000000930 flags rw-
+ DYNAMIC off    0x000000000000fe40 vaddr 0x0000000000010e40 paddr 0x0000000000010e40 align 2**3
+         filesz 0x0000000000000180 memsz 0x0000000000000180 flags rw-
+    NOTE off    0x00000000000002c4 vaddr 0x00000000000002c4 paddr 0x00000000000002c4 align 2**2
+         filesz 0x0000000000000024 memsz 0x0000000000000024 flags r--
+EH_FRAME off    0x000000000000da40 vaddr 0x000000000000da40 paddr 0x000000000000da40 align 2**2
+         filesz 0x0000000000000494 memsz 0x0000000000000494 flags r--
+   STACK off    0x0000000000000000 vaddr 0x0000000000000000 paddr 0x0000000000000000 align 2**4
+         filesz 0x0000000000000000 memsz 0x0000000000000000 flags rw-
+   RELRO off    0x000000000000fda0 vaddr 0x0000000000010da0 paddr 0x0000000000010da0 align 2**0
+         filesz 0x0000000000000260 memsz 0x0000000000000260 flags r--
+
+Dynamic Section:
+  SYMBOLIC             0x0000000000000000
+  FINI_ARRAY           0x0000000000010da0
+  FINI_ARRAYSZ         0x0000000000000020
+  GNU_HASH             0x00000000000002e8
+  STRTAB               0x00000000000003e0
+  SYMTAB               0x0000000000000320
+  STRSZ                0x0000000000000078
+  SYMENT               0x0000000000000018
+  DEBUG                0x0000000000000000
+  PLTGOT               0x0000000000010fc0
+  RELA                 0x00000000000004a0
+  RELASZ               0x00000000000000d8
+  RELAENT              0x0000000000000018
+  VERDEF               0x0000000000000468
+  VERDEFNUM            0x0000000000000002
+  BIND_NOW             0x0000000000000000
+  FLAGS_1              0x0000000008000001
+  VERSYM               0x0000000000000458
+  RELACOUNT            0x0000000000000007
+
+Version definitions:
+1 0x01 0x028ac13f enclave.so
+2 0x00 0x028ac13f enclave.so
+
+Sections:
+Idx Name          Size      VMA               LMA               File off  Algn
+  0 .interp       0000001c  00000000000002a8  00000000000002a8  000002a8  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  1 .note.gnu.build-id 00000024  00000000000002c4  00000000000002c4  000002c4  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  2 .gnu.hash     00000038  00000000000002e8  00000000000002e8  000002e8  2**3
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  3 .dynsym       000000c0  0000000000000320  0000000000000320  00000320  2**3
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  4 .dynstr       00000078  00000000000003e0  00000000000003e0  000003e0  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  5 .gnu.version  00000010  0000000000000458  0000000000000458  00000458  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  6 .gnu.version_d 00000038  0000000000000468  0000000000000468  00000468  2**3
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  7 .rela.dyn     000000d8  00000000000004a0  00000000000004a0  000004a0  2**3
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  8 .plt          00000010  0000000000001000  0000000000001000  00001000  2**4
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  9 .plt.got      00000010  0000000000001010  0000000000001010  00001010  2**3
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+ 10 .text         0000abc0  0000000000001020  0000000000001020  00001020  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+ 11 .nipx         00000e5f  000000000000bbe0  000000000000bbe0  0000bbe0  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+ 12 .rodata       0000014e  000000000000d000  000000000000d000  0000d000  2**4
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+ 13 .niprod       000008c0  000000000000d180  000000000000d180  0000d180  2**6
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+ 14 .eh_frame_hdr 00000494  000000000000da40  000000000000da40  0000da40  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+ 15 .eh_frame     00001268  000000000000ded8  000000000000ded8  0000ded8  2**3
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+ 16 .fini_array   00000020  0000000000010da0  0000000000010da0  0000fda0  2**3
+                  CONTENTS, ALLOC, LOAD, DATA
+ 17 .data.rel.ro  00000080  0000000000010dc0  0000000000010dc0  0000fdc0  2**5
+                  CONTENTS, ALLOC, LOAD, DATA
+ 18 .dynamic      00000180  0000000000010e40  0000000000010e40  0000fe40  2**3
+                  CONTENTS, ALLOC, LOAD, DATA
+ 19 .got          00000028  0000000000010fc0  0000000000010fc0  0000ffc0  2**3
+                  CONTENTS, ALLOC, LOAD, DATA
+ 20 .data         0000009f  0000000000011000  0000000000011000  00010000  2**4
+                  CONTENTS, ALLOC, LOAD, DATA
+ 21 .nipd         00000008  00000000000110a0  00000000000110a0  000100a0  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+ 22 .bss          00000610  00000000000110c0  00000000000110c0  000100a8  2**5
+                  ALLOC
+ 23 .comment      00000029  0000000000000000  0000000000000000  000100a8  2**0
+                  CONTENTS, READONLY
+ 24 .note.sgxmeta 0000501c  0000000000000000  0000000000000000  000100d4  2**2
+                  CONTENTS, READONLY
+ 25 .debug_aranges 00000fa0  0000000000000000  0000000000000000  000150f0  2**4
+                  CONTENTS, READONLY, DEBUGGING
+ 26 .debug_info   0000fca6  0000000000000000  0000000000000000  00016090  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 27 .debug_abbrev 00002c84  0000000000000000  0000000000000000  00025d36  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 28 .debug_line   00005db2  0000000000000000  0000000000000000  000289ba  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 29 .debug_str    00003722  0000000000000000  0000000000000000  0002e76c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 30 .debug_ranges 00000f80  0000000000000000  0000000000000000  00031e8e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+SYMBOL TABLE:
+00000000000002a8 l    d  .interp	0000000000000000              .interp
+00000000000002c4 l    d  .note.gnu.build-id	0000000000000000              .note.gnu.build-id
+00000000000002e8 l    d  .gnu.hash	0000000000000000              .gnu.hash
+0000000000000320 l    d  .dynsym	0000000000000000              .dynsym
+00000000000003e0 l    d  .dynstr	0000000000000000              .dynstr
+0000000000000458 l    d  .gnu.version	0000000000000000              .gnu.version
+0000000000000468 l    d  .gnu.version_d	0000000000000000              .gnu.version_d
+00000000000004a0 l    d  .rela.dyn	0000000000000000              .rela.dyn
+0000000000001000 l    d  .plt	0000000000000000              .plt
+0000000000001010 l    d  .plt.got	0000000000000000              .plt.got
+0000000000001020 l    d  .text	0000000000000000              .text
+000000000000bbe0 l    d  .nipx	0000000000000000              .nipx
+000000000000d000 l    d  .rodata	0000000000000000              .rodata
+000000000000d180 l    d  .niprod	0000000000000000              .niprod
+000000000000da40 l    d  .eh_frame_hdr	0000000000000000              .eh_frame_hdr
+000000000000ded8 l    d  .eh_frame	0000000000000000              .eh_frame
+0000000000010da0 l    d  .fini_array	0000000000000000              .fini_array
+0000000000010dc0 l    d  .data.rel.ro	0000000000000000              .data.rel.ro
+0000000000010e40 l    d  .dynamic	0000000000000000              .dynamic
+0000000000010fc0 l    d  .got	0000000000000000              .got
+0000000000011000 l    d  .data	0000000000000000              .data
+00000000000110a0 l    d  .nipd	0000000000000000              .nipd
+00000000000110c0 l    d  .bss	0000000000000000              .bss
+0000000000000000 l    d  .comment	0000000000000000              .comment
+0000000000000000 l    d  .note.sgxmeta	0000000000000000              .note.sgxmeta
+0000000000000000 l    d  .debug_aranges	0000000000000000              .debug_aranges
+0000000000000000 l    d  .debug_info	0000000000000000              .debug_info
+0000000000000000 l    d  .debug_abbrev	0000000000000000              .debug_abbrev
+0000000000000000 l    d  .debug_line	0000000000000000              .debug_line
+0000000000000000 l    d  .debug_str	0000000000000000              .debug_str
+0000000000000000 l    d  .debug_ranges	0000000000000000              .debug_ranges
+0000000000000000 l    df *ABS*	0000000000000000              Enclave_t.c
+0000000000001020 l     F .text	0000000000000053              sgx_test
+0000000000001073 l     F .text	0000000000000053              sgx_test2
+0000000000000000 l    df *ABS*	0000000000000000              Enclave.cpp
+0000000000000000 l    df *ABS*	0000000000000000              init_optimized_lib.cpp
+0000000000001106 l     F .text	000000000000014a              _ZL28set_global_feature_indicatormm
+0000000000000000 l    df *ABS*	0000000000000000              trts.cpp
+000000000000159c l     F .text	000000000000002f              _ZL15__do_get_rand32Pj
+0000000000000000 l    df *ABS*	0000000000000000              trts_add_trim.cpp
+000000000000171e l     F .text	0000000000000047              memcpy_s
+0000000000001765 l     F .text	0000000000000105              _ZL19sgx_accept_backwardmmm
+000000000000186a l     F .text	000000000000012b              _ZL35sgx_accept_forward_within_exceptionmm
+0000000000001b76 l     F .text	000000000000009c              _ZL20check_heap_dyn_rangePvmP24dynamic_flags_attributes
+0000000000001c12 l     F .text	00000000000000a3              _ZL20check_rsrv_dyn_rangePvmP24dynamic_flags_attributes
+0000000000001cb5 l     F .text	00000000000000f2              _ZL25check_dynamic_entry_rangePvmtmP24dynamic_flags_attributes
+0000000000001da7 l     F .text	0000000000000037              _ZL34check_utility_thread_dynamic_stackPvmP24dynamic_flags_attributes
+0000000000001dde l     F .text	00000000000001dc              _ZL19check_dynamic_rangePvmPmP24dynamic_flags_attributes
+000000000000d028 l     O .rodata	000000000000000f              _ZZ14trim_EPC_pagesE8__func__
+0000000000000000 l    df *ABS*	0000000000000000              trts_ecall.cpp
+000000000000267c l     F .text	0000000000000047              memcpy_s
+000000000000270f l     F .text	00000000000000f0              _ZL16is_ecall_allowedj
+00000000000027ff l     F .text	000000000000008c              _ZL13get_func_addrjPPv
+00000000000110c0 l     O .bss	0000000000000008              _ZL10g_tcs_node
+00000000000110c8 l     O .bss	0000000000000008              _ZL12g_tcs_cookie
+0000000000002982 l     F .text	00000000000000e0              _ZL10do_del_tcsPv
+0000000000011000 l     O .data	0000000000000001              _ZL16g_is_first_ecall
+00000000000110d0 l     O .bss	0000000000000004              _ZL10g_ife_lock
+0000000000002a62 l     F .text	000000000000012d              _ZL10trts_ecalljPv
+0000000000002b8f l     F .text	000000000000002a              _ZL24init_static_stack_canaryPv
+000000000000357d l     F .text	0000000000000040              _Z30_random_stack_noinline_wrapperI9_status_tJjPvEJRiRS1_EET_PFS4_DpT0_EDpOT1_
+0000000000000000 l    df *ABS*	0000000000000000              trts_emodpr.cpp
+0000000000000000 l    df *ABS*	0000000000000000              trts_ocall.cpp
+0000000000000000 l    df *ABS*	0000000000000000              trts_trim.cpp
+0000000000000000 l    df *ABS*	0000000000000000              trts_util.cpp
+0000000000000000 l    df *ABS*	0000000000000000              trts_veh.cpp
+00000000000110d8 l     O .bss	0000000000000008              _ZL12g_first_node
+00000000000110e0 l     O .bss	0000000000000004              _ZL14g_handler_lock
+00000000000110e8 l     O .bss	0000000000000008              _ZL12g_veh_cookie
+0000000000003ef3 l     F .text	0000000000000047              _ZL21expand_stack_by_pagesPvm
+0000000000000000 l    df *ABS*	0000000000000000              trts_xsave.cpp
+0000000000000000 l    df *ABS*	0000000000000000              elf_parser.c
+000000000000445c l     F .text	0000000000000072              get_phdr
+00000000000044ce l     F .text	000000000000007a              get_sym
+0000000000004548 l     F .text	0000000000000225              do_relocs
+0000000000004a41 l     F .text	00000000000000ee              elf_tls_aligned_virtual_size
+0000000000004d69 l     F .text	00000000000000ac              has_text_relo
+0000000000000000 l    df *ABS*	0000000000000000              global_init.c
+00000000000110f0 l     O .bss	0000000000000008              g_exit_function
+00000000000110f8 l     O .bss	0000000000000008              g_exit_function_cookie
+00000000000050bd l     F .text	0000000000000082              do_atexit_aux
+000000000000513f l     F .text	00000000000000c7              do_ctors_aux
+0000000000005206 l     F .text	00000000000000b7              do_dtors_aux
+0000000000000000 l    df *ABS*	0000000000000000              stack_chk.c
+0000000000000000 l    df *ABS*	0000000000000000              assert.c
+0000000000000000 l    df *ABS*	0000000000000000              malloc.c
+00000000000052ff l     F .text	0000000000000035              spin_acquire_lock
+0000000000011100 l     O .bss	0000000000000004              malloc_global_mutex
+0000000000011120 l     O .bss	0000000000000030              mparams
+0000000000011160 l     O .bss	00000000000003a8              _gm_
+0000000000005334 l     F .text	000000000000005f              segment_holding
+0000000000005393 l     F .text	0000000000000139              init_mparams
+00000000000054cc l     F .text	0000000000000049              do_check_any_chunk
+0000000000005515 l     F .text	00000000000000fa              do_check_top_chunk
+000000000000560f l     F .text	0000000000000050              do_check_mmapped_chunk
+000000000000565f l     F .text	00000000000000d6              do_check_inuse_chunk
+0000000000005735 l     F .text	0000000000000171              do_check_free_chunk
+00000000000058a6 l     F .text	000000000000009c              do_check_malloced_chunk
+0000000000005942 l     F .text	0000000000000099              init_top
+00000000000059db l     F .text	000000000000005c              init_bins
+0000000000005a37 l     F .text	0000000000000cb6              prepend_alloc
+00000000000066ed l     F .text	0000000000000710              add_segment
+0000000000006dfd l     F .text	00000000000009dc              sys_alloc
+00000000000077d9 l     F .text	0000000000000083              release_unused_segments
+000000000000785c l     F .text	000000000000022c              sys_trim
+0000000000007a88 l     F .text	0000000000000c6a              tmalloc_large
+00000000000086f2 l     F .text	00000000000006b6              tmalloc_small
+0000000000000000 l    df *ABS*	0000000000000000              memcpy.c
+0000000000000000 l    df *ABS*	0000000000000000              memset.c
+0000000000000000 l    df *ABS*	0000000000000000              memset_s.c
+0000000000011030 l     O .data	0000000000000008              __memset_vp
+0000000000000000 l    df *ABS*	0000000000000000              sbrk.c
+0000000000010e08 l     O .data.rel.ro	0000000000000008              heap_base
+0000000000010e10 l     O .data.rel.ro	0000000000000008              heap_size
+0000000000010e18 l     O .data.rel.ro	0000000000000004              is_edmm_supported
+0000000000010e20 l     O .data.rel.ro	0000000000000008              heap_min_size
+0000000000011510 l     O .bss	0000000000000008              heap_used.2393
+000000000000d149 l     O .rodata	0000000000000005              __func__.2398
+0000000000000000 l    df *ABS*	0000000000000000              se_string_init.c
+0000000000000000 l    df *ABS*	0000000000000000              spinlock.c
+0000000000000000 l    df *ABS*	0000000000000000              _setjmp.S
+000000000000b506 l       .text	0000000000000000              .crash
+0000000000000000 l    df *ABS*	0000000000000000              sgx_rsrv_mem_init.cpp
+0000000000000000 l    df *ABS*	0000000000000000              errno.c
+0000000000000000 l    df *ABS*	0000000000000000              init_tcrypto_lib.cpp
+0000000000000000 l    df *ABS*	0000000000000000              sgx_common_init_ipp.cpp
+0000000000000000 l    df *ABS*	0000000000000000              sgx_create_report.cpp
+0000000000011520 l     O .bss	00000000000001b0              _ZZ15sgx_self_reportE7_report
+0000000000000000 l    df *ABS*	0000000000000000              init_enclave.cpp
+000000000000c285 l     F .nipx	0000000000000158              _ZL18add_static_threadsPVK9_layout_tS1_m
+0000000000000000 l    df *ABS*	0000000000000000              trts_nsp.cpp
+000000000000c3f1 l     F .nipx	00000000000000c5              _ZL16init_stack_guardPv
+000000000000d060 l     O .rodata	0000000000000011              _ZZL16init_stack_guardPvE8__func__
+0000000000000000 l    df *ABS*	0000000000000000              xsave_gnu.S
+0000000000000000 l    df *ABS*	0000000000000000              trts_pic.S
+0000000000000000 l    df *ABS*	0000000000000000              tls_support.c
+0000000000000000 l    df *ABS*	0000000000000000              trts_version.cpp
+0000000000000000 l    df *ABS*	0000000000000000              tstdc_version.cpp
+0000000000000000 l    df *ABS*	0000000000000000              tcrypto_version.cpp
+0000000000000000 l    df *ABS*	0000000000000000              tservice_version.cpp
+0000000000000000 l    df *ABS*	0000000000000000              metadata_sec.S
+0000000000000000 l    df *ABS*	0000000000000000              
+000000000000b508 l     F .text	0000000000000000              longjmp
+000000000000c6a9 l     F .nipx	0000000000000000              get_stack_guard
+000000000000c3dd l     F .nipx	0000000000000014              sgx_is_enclave_crashed
+000000000000b47f l     F .text	0000000000000000              setjmp
+0000000000003b6f l     F .text	00000000000000aa              feature_supported
+000000000000b3f0 l     F .text	000000000000000f              sgx_init_string_lib
+000000000000c965 l     F .nipx	0000000000000000              do_ereport
+000000000000b64f l     F .text	0000000000000014              tcrypto_access_version_dummy1
+000000000000b941 l     F .text	0000000000000270              sgx_create_report
+00000000000035bd l     F .text	0000000000000085              change_permissions_ocall
+0000000000001305 l     F .text	0000000000000090              sgx_is_within_enclave
+0000000000000000 l       *ABS*	0000000000000000              __ImageBase
+0000000000010df8 l     O .data.rel.ro	0000000000000004              g_cpu_core_num
+000000000000c66c l     F .nipx	0000000000000000              get_enclave_state
+0000000000004421 l     F .text	000000000000003b              get_xfeature_state
+0000000000002708 l     F .text	0000000000000007              _Z24_pthread_tls_destructorsv
+0000000000010e00 l     O .data.rel.ro	0000000000000008              __stack_chk_guard
+000000000000b508 l     F .text	0000000000000000              _longjmp
+0000000000010e40 l     O .dynamic	0000000000000000              _DYNAMIC
+000000000000b644 l     F .text	000000000000000b              __errno
+0000000000004b2f l     F .text	000000000000011d              elf_get_init_array
+00000000000026e7 l     F .text	000000000000000b              _Z22_pthread_tls_get_statev
+00000000000110a0 l     O .nipd	0000000000000004              g_enclave_state
+0000000000001536 l     F .text	0000000000000066              sgx_ocfree
+00000000000026fd l     F .text	000000000000000b              _Z20_pthread_wakeup_joinPv
+0000000000003a27 l     F .text	000000000000001b              get_rsrv_base
+000000000000af32 l     F .text	000000000000002d              memcpy
+0000000000010df4 l     O .data.rel.ro	0000000000000004              g_sdk_version
+000000000000b681 l     F .text	00000000000002ac              init_ipp_cpuid
+000000000000b5af l     F .text	0000000000000095              rsrv_mem_init
+000000000000c4b6 l     F .nipx	0000000000000155              enter_enclave
+0000000000008da8 l     F .text	0000000000000af7              malloc
+0000000000003820 l     F .text	0000000000000075              trim_range_ocall
+000000000000c664 l     F .nipx	0000000000000000              get_enclave_base
+0000000000010e00 l     O .data.rel.ro	0000000000000008              __intel_security_cookie
+0000000000004e15 l     F .text	00000000000002a8              change_protection
+000000000000bbb1 l     F .text	000000000000002f              sgx_self_report
+0000000000011040 l     O .data	000000000000001c              sgx_tstdc_version
+000000000000c99a l     F .nipx	0000000000000000              do_emodpe
+0000000000011060 l     O .data	000000000000001e              sgx_tcrypto_version
+000000000000c637 l     F .nipx	0000000000000000              save_xregs
+0000000000003cfd l     F .text	00000000000001f6              internal_handle_exception
+000000000000356e l     F .text	000000000000000f              _Z6rdrandIjET_v
+000000000000c683 l     F .nipx	0000000000000000              lock_enclave
+000000000000288b l     F .text	00000000000000f7              _Z11do_save_tcsPv
+000000000000c9ce l     F .nipx	0000000000000000              abort
+0000000000003915 l     F .text	0000000000000092              get_heap_size
+000000000000b663 l     F .text	000000000000001e              sgx_init_crypto_lib
+00000000000052da l     F .text	0000000000000009              __stack_chk_fail
+0000000000003b54 l     F .text	000000000000001b              get_errno_addr
+000000000000c9af l     F .nipx	0000000000000000              do_rdrand
+0000000000010e30 l     O .data.rel.ro	0000000000000008              rsrv_mem_size
+00000000000110a4 l     O .nipd	0000000000000004              g_xsave_enabled
+00000000000020a7 l     F .text	0000000000000107              sgx_accept_forward
+000000000000c8e2 l     F .nipx	0000000000000000              asm_oret
+000000000000c980 l     F .nipx	0000000000000000              do_eaccept
+000000000000d000 l     O .rodata	0000000000000008              g_dyn_entry_table
+000000000000222f l     F .text	00000000000000d3              apply_EPC_pages
+00000000000026d2 l     F .text	000000000000000b              _Z16_pthread_enabledv
+0000000000004c4c l     F .text	000000000000011d              elf_get_uninit_array
+00000000000032ce l     F .text	00000000000001b7              trts_mprotect
+000000000000207a l     F .text	000000000000002d              get_dynamic_stack_max_page
+0000000000003a42 l     F .text	0000000000000092              get_rsrv_size
+000000000000afca l     F .text	000000000000007d              memset_s
+0000000000003699 l     F .text	0000000000000093              update_ocall_lastsp
+0000000000001995 l     F .text	0000000000000074              _Z24get_dynamic_layout_by_idt
+000000000000b3dc l     F .text	0000000000000014              tstdc_access_version_dummy1
+00000000000038fa l     F .text	000000000000001b              get_heap_base
+00000000000010c6 l     F .text	0000000000000020              test
+00000000000016e4 l     F .text	000000000000003a              check_static_stack_canary
+000000000000243b l     F .text	0000000000000241              do_add_thread
+0000000000003c19 l     F .text	0000000000000073              is_stack_addr
+0000000000001a09 l     F .text	000000000000016d              _Z18accept_post_removePVK9_layout_tS1_m
+00000000000026dd l     F .text	000000000000000a              _Z24_pthread_tls_store_state9_status_t
+00000000000052bd l     F .text	000000000000000c              init_global_object
+0000000000008da8 l     F .text	0000000000000af7              dlmalloc
+000000000000b466 l     F .text	0000000000000019              sgx_spin_unlock
+000000000000adc1 l     F .text	0000000000000171              __memcpy
+000000000000372c l     F .text	00000000000000f4              do_oret
+0000000000010dc0 l     O .data.rel.ro	0000000000000028              g_ecall_table
+000000000000b0fe l     F .text	00000000000002de              sbrk
+00000000000026c3 l     F .text	000000000000000f              _pthread_thread_run
+0000000000010e28 l     O .data.rel.ro	0000000000000008              rsrv_mem_base
+0000000000001fba l     F .text	0000000000000081              is_dynamic_thread
+000000000000af5f l     F .text	0000000000000041              __memset
+00000000000110a8 l       .bss	0000000000000000              __bss_start
+000000000000afa0 l     F .text	000000000000002a              memset
+000000000000c949 l     F .nipx	0000000000000000              do_egetkey
+0000000000002302 l     F .text	0000000000000139              trim_EPC_pages
+000000000000d800 l     O .niprod	0000000000000240              SYNTHETIC_STATE
+000000000000da40 l       .eh_frame_hdr	0000000000000000              __GNU_EH_FRAME_HDR
+0000000000010de8 l     O .data.rel.ro	0000000000000008              g_cpu_feature_indicator
+00000000000021ae l     F .text	0000000000000081              apply_pages_within_exception
+00000000000039a7 l     F .text	0000000000000080              get_heap_min_size
+0000000000003f3a l     F .text	00000000000004e7              trts_handle_exception
+000000000000c7ba l     F .nipx	0000000000000000              do_ocall
+0000000000001425 l     F .text	0000000000000111              sgx_ocalloc
+0000000000003485 l     F .text	00000000000000e9              _Z20random_stack_advanceILj2048E9_status_tJjPvEJRiRS1_EET0_PFS4_DpT1_EDpOT2_
+00000000000012ee l     F .text	0000000000000017              trts_access_version_dummy1
+0000000000004981 l     F .text	00000000000000c0              elf_tls_info
+000000000000c69f l     F .nipx	0000000000000000              get_thread_data
+0000000000003153 l     F .text	000000000000017b              do_uninit_enclave
+000000000000308f l     F .text	00000000000000c4              do_ecall_add_thread
+00000000000010e6 l     F .text	0000000000000020              test2
+000000000000b92d l     F .text	0000000000000014              tservice_access_version_dummy1
+0000000000002ead l     F .text	00000000000001e2              do_ecall
+0000000000003895 l     F .text	0000000000000065              trim_range_commit_ocall
+000000000000bbe0 l     F .nipx	000000000000022d              do_init_enclave
+000000000000203b l     F .text	000000000000003f              is_dynamic_thread_exist
+000000000000476d l     F .text	0000000000000214              relocate_enclave
+00000000000110d4 l     O .bss	0000000000000004              g_uninit_flag
+0000000000003c8c l     F .text	000000000000003b              is_valid_sp
+000000000000c60b l     F .nipx	0000000000000000              restore_xregs
+0000000000003cc7 l     F .text	0000000000000036              is_utility_thread
+0000000000003642 l     F .text	0000000000000057              sgx_ocall
+00000000000110a8 l       .nipd	0000000000000000              _edata
+000000000000b3ff l     F .text	0000000000000067              sgx_spin_lock
+0000000000011080 l     O .data	000000000000001f              sgx_tservice_version
+0000000000010fc0 l     O .got	0000000000000000              _GLOBAL_OFFSET_TABLE_
+00000000000116d0 l       .bss	0000000000000000              _end
+000000000000c8d3 l     F .nipx	0000000000000000              __morestack
+00000000000026f2 l     F .text	000000000000000b              _Z26_pthread_tls_store_contextPv
+000000000000c679 l     F .nipx	0000000000000000              set_enclave_state
+0000000000003ad4 l     F .text	0000000000000080              get_rsrv_min_size
+000000000000b644 l     F .text	000000000000000b              __errno_location
+0000000000010df0 l     O .data.rel.ro	0000000000000004              EDMM_supported
+000000000000b47f l     F .text	0000000000000000              _setjmp
+0000000000010e38 l     O .data.rel.ro	0000000000000008              rsrv_mem_min_size
+00000000000015cb l     F .text	0000000000000119              sgx_read_rand
+00000000000052c9 l     F .text	0000000000000011              uninit_global_object
+000000000000b047 l     F .text	00000000000000b7              heap_init
+0000000000011010 l     O .data	000000000000001b              sgx_trts_version
+000000000000c976 l       .nipx	0000000000000000              Lereport_inst
+000000000000989f l     F .text	0000000000001522              dlfree
+00000000000052e3 l     F .text	000000000000001c              __assert
+0000000000001395 l     F .text	0000000000000090              sgx_is_outside_enclave
+0000000000002bb9 l     F .text	00000000000002f4              do_init_thread
+000000000000c9dd l     F .nipx	0000000000000000              continue_execution
+0000000000001250 l     F .text	000000000000009e              init_optimized_libs
+000000000000be0d l     F .nipx	0000000000000478              init_enclave
+000000000000989f l     F .text	0000000000001522              free
+000000000000c6b3 g     F .nipx	0000000000000000              enclave_entry
+0000000000011518 g     O .bss	0000000000000008              g_peak_rsrv_mem_committed
+0000000000000000  w      *UND*	0000000000000000              _Z9pcl_entryPvS_
+0000000000000000 g     O *ABS*	0000000000000000              enclave.so
+000000000000d180 g     O .niprod	0000000000000670              g_global_data
+0000000000011508 g     O .bss	0000000000000008              g_peak_heap_used
+0000000000000000  w      *UND*	0000000000000000              ippcpSetCpuFeatures
+
+
