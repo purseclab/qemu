@@ -153,7 +153,7 @@ unsigned long long find_symbol(char * sym, unsigned long long handle, unsigned l
 	Elf64_Sym * symbol;
         while (idx < num_entries) {
                 symbol = (sizeof(Elf64_Sym) * idx) + symbol_base;
-                printf("%d:%s \r\n", symbol->st_value, strtab + symbol->st_name);
+                //printf("%d:%s \r\n", symbol->st_value, strtab + symbol->st_name);
 		if (strcmp(strtab + symbol->st_name, sym) == 0)
 			return symbol->st_value + handle;
                 idx++;
@@ -205,13 +205,23 @@ int main(int argc, char* argv[]) {
 #endif
         /* Relocate the image */
 	char* pointer1 = mmap(NULL,
-			sb.st_size +0x400000,
-			PROT_READ | PROT_WRITE | PROT_EXEC,
+			sb.st_size +0x100000,
+			PROT_READ | PROT_WRITE | PROT_EXEC ,
 			 MAP_PRIVATE|MAP_ANONYMOUS,
 			 -1,
 			 0);
 
-	memset(pointer1, 0, sb.st_size +0x400000);
+	if (!pointer1) {
+		printf(explain_mmap(NULL,
+                        sb.st_size +0x100000,
+                        PROT_READ | PROT_WRITE | PROT_EXEC ,
+                         MAP_PRIVATE|MAP_ANONYMOUS | MAP_FIXED,
+                         -1,
+                         0));
+		exit(1);
+	}
+
+	memset(pointer1, 0, sb.st_size +0x100000);
 
 	memcpy(pointer1, handle, sb.st_size);
 
@@ -371,7 +381,10 @@ int main(int argc, char* argv[]) {
 
 	unsigned long long * g_ife_lock_sym = find_symbol("_ZL10g_ife_lock", handle, strtab, symbol_base, num_entries);
 
+	unsigned long long * sec_means = find_symbol("sgx_secure_kmeans", handle, strtab, symbol_base, num_entries);
+	unsigned long long *g_ecall_table = find_symbol("g_ecall_table", handle, strtab, symbol_base, num_entries);
 
+#ifdef DOUBLE_REL
 	pointer1 = mmap(NULL,
                         sb.st_size +0x400000,
                         PROT_READ | PROT_WRITE | PROT_EXEC,
@@ -379,27 +392,39 @@ int main(int argc, char* argv[]) {
                          -1,
                          0);
 
+	memset(pointer1, 0, sb.st_size +0x400000);
+	memcpy(pointer1, header, sizeof(Elf64_Ehdr));
 
-
+#endif 
 
 	/* relocate sections */
 	i=0;
 	for (; i < shnum; ++i) {
                 if (shdr[i].sh_addr && shdr[i].sh_addr != shdr[i].sh_offset) {
 			printf("Relocating %s\n",sh_strtab_p + shdr[i].sh_name); 
-                        mymemcpy(handle + shdr[i].sh_addr, handle + shdr[i].sh_offset, shdr[i].sh_size);
+#ifdef DOUBLE_REL
+                        mymemcpy(pointer1 + shdr[i].sh_addr, handle + shdr[i].sh_offset, shdr[i].sh_size);
+#else
+			mymemcpy(handle + shdr[i].sh_addr, handle + shdr[i].sh_offset, shdr[i].sh_size);
+#endif
 		}
-#if 0
+#ifdef DOUBLE_REL
 		else {
 			mymemcpy(pointer1 + shdr[i].sh_addr, handle + shdr[i].sh_offset, shdr[i].sh_size);
 		}
 #endif 
         }
 
+#ifdef DOUBLE_REL
+	handle = pointer1;
+#endif 
+
+
         if (pcl_entry)
                 *pcl_entry = 0;
 
-	pcl_entry = 0x4003513fd8;
+//	pcl_entry = 0x4003513fd8;
+        pcl_entry = 0x4003513fd8;
 	*pcl_entry =0;
 	*heap_base_sym = 0;
 
@@ -408,6 +433,10 @@ int main(int argc, char* argv[]) {
 	*memset_sym = &memset;
 	*g_ife_lock_sym = 0;
 
+	unsigned long long * first = (char*) g_ecall_table +8; //First ECALL  
+
+	unsigned long long * tableEntry = 0x4003512480;
+	*first = sec_means;
 
 #endif 
 
