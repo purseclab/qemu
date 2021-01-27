@@ -211,7 +211,10 @@ int main(int argc, char* argv[]) {
 			 -1,
 			 0);
 
+	memset(pointer1, 0, sb.st_size +0x400000);
+
 	memcpy(pointer1, handle, sb.st_size);
+
 
 	munmap(handle, sb.st_size);
 
@@ -351,9 +354,33 @@ int main(int argc, char* argv[]) {
 
 	int num_entries = size/sizeof(Elf64_Sym);
 
-	pcl_entry = find_symbol("__memset_vp", handle, strtab, symbol_base, num_entries);
+	unsigned long long * memset_sym = 0;
+	memset_sym  = find_symbol("__memset_vp", handle, strtab, symbol_base, num_entries);
 	if (pcl_entry)
 	*pcl_entry = &memset;
+
+	pcl_entry = find_symbol("_Z9pcl_entryPvS_",  handle, strtab, symbol_base, num_entries);
+	//if (pcl_entry)
+	//*pcl_entry =0;
+	pcl_entry = find_symbol("g_enclave_state",  handle, strtab, symbol_base, num_entries);
+	if (pcl_entry)
+		*pcl_entry = 0;
+
+	unsigned long long* heap_base_sym = find_symbol("heap_base",  handle, strtab, symbol_base, num_entries);
+	*heap_base_sym = 0;
+
+	unsigned long long * g_ife_lock_sym = find_symbol("_ZL10g_ife_lock", handle, strtab, symbol_base, num_entries);
+
+
+	pointer1 = mmap(NULL,
+                        sb.st_size +0x400000,
+                        PROT_READ | PROT_WRITE | PROT_EXEC,
+                         MAP_PRIVATE|MAP_ANONYMOUS,
+                         -1,
+                         0);
+
+
+
 
 	/* relocate sections */
 	i=0;
@@ -362,7 +389,25 @@ int main(int argc, char* argv[]) {
 			printf("Relocating %s\n",sh_strtab_p + shdr[i].sh_name); 
                         mymemcpy(handle + shdr[i].sh_addr, handle + shdr[i].sh_offset, shdr[i].sh_size);
 		}
+#if 0
+		else {
+			mymemcpy(pointer1 + shdr[i].sh_addr, handle + shdr[i].sh_offset, shdr[i].sh_size);
+		}
+#endif 
         }
+
+        if (pcl_entry)
+                *pcl_entry = 0;
+
+	pcl_entry = 0x4003513fd8;
+	*pcl_entry =0;
+	*heap_base_sym = 0;
+
+	unsigned long long * ippCPUFeature = 0x4003513fe0;
+	*ippCPUFeature = 0;
+	*memset_sym = &memset;
+	*g_ife_lock_sym = 0;
+
 
 #endif 
 
@@ -437,6 +482,7 @@ int main(int argc, char* argv[]) {
 	data->last_sp = data->stack_base_addr;
 
 	arch_prctl(ARCH_SET_GS, buffer);
+	//arch_prctl(ARCH_SET_FS, buffer); //Some older implementations use FS instead of GS, even then use ARCH_GET_FS
 	/* 
 	 *  *      edi >=  0 - ecall
 	 *      edi == -1 - do_init_enclave
